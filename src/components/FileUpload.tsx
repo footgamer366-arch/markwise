@@ -62,7 +62,11 @@ export function FileUpload({ label, hint, fileName, loading, progressLabel, onFi
         )}
       </div>
       <p className="font-serif text-lg font-medium text-foreground">{label}</p>
-      {fileName ? (
+      {loading && progressLabel ? (
+        <p className="mt-1 flex items-center gap-1.5 text-sm text-pen">
+          <Loader2 className="h-4 w-4 animate-spin" /> {progressLabel}
+        </p>
+      ) : fileName ? (
         <p className="mt-1 flex items-center gap-1.5 text-sm text-success">
           <FileText className="h-4 w-4" /> {fileName}
         </p>
