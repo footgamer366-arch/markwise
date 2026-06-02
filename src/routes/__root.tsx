@@ -77,14 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "MarkWise" },
+      { name: "description", content: "AI-powered exam grading tool for accurate, automated student assessment." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "MarkWise" },
+      { property: "og:description", content: "AI-powered exam grading tool for accurate, automated student assessment." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "MarkWise" },
+      { name: "twitter:description", content: "AI-powered exam grading tool for accurate, automated student assessment." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/34c09593-f212-4ae5-acc1-4638afdb6b4c" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/34c09593-f212-4ae5-acc1-4638afdb6b4c" },
     ],
     links: [
       {
