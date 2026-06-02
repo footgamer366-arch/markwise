@@ -11,7 +11,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { FileUpload } from "@/components/FileUpload";
 import { MarkSchemeEditor } from "@/components/MarkSchemeEditor";
 import { GradeReport } from "@/components/GradeReport";
-import { extractPdfText } from "@/lib/pdf-text";
+import { extractPdfText, type ExtractProgress } from "@/lib/pdf-text";
 import { extractMarkScheme, gradeAnswers } from "@/lib/grading.functions";
 import { buildScoreReport, type MarkScheme, type ScoreReport } from "@/lib/scoring";
 
