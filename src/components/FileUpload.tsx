@@ -7,11 +7,12 @@ interface FileUploadProps {
   hint: string;
   fileName: string | null;
   loading?: boolean;
+  progressLabel?: string | null;
   onFile: (file: File) => void;
   accent?: boolean;
 }
 
-export function FileUpload({ label, hint, fileName, loading, onFile, accent }: FileUploadProps) {
+export function FileUpload({ label, hint, fileName, loading, progressLabel, onFile, accent }: FileUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
 
