@@ -43,30 +43,46 @@ function Index() {
   const [report, setReport] = useState<ScoreReport | null>(null);
   const [busy, setBusy] = useState(false);
   const [parsing, setParsing] = useState<"model" | "student" | null>(null);
+  const [modelProgress, setModelProgress] = useState<string | null>(null);
+  const [studentProgress, setStudentProgress] = useState<string | null>(null);
+
+  const progressLabel = (p: ExtractProgress): string => {
+    if (p.stage === "loading") return "Opening PDF…";
+    if (p.stage === "ocr") {
+      const pct = Math.round((p.ocrProgress ?? 0) * 100);
+      return `Reading handwriting (OCR) — page ${p.page}/${p.totalPages} · ${pct}%`;
+    }
+    if (p.stage === "text") return `Extracting text — page ${p.page}/${p.totalPages}`;
+    return "Finishing up…";
+  };
 
   const handleModel = async (file: File) => {
     setModelFile(file);
     setParsing("model");
+    setModelProgress("Opening PDF…");
     try {
-      setModelText(await extractPdfText(file));
+      setModelText(await extractPdfText(file, (p) => setModelProgress(progressLabel(p))));
     } catch {
       toast.error("Could not read that PDF. Try another file.");
       setModelFile(null);
     } finally {
       setParsing(null);
+      setModelProgress(null);
     }
   };
 
   const handleStudent = async (file: File) => {
     setStudentFile(file);
     setParsing("student");
+    setStudentProgress("Opening PDF…");
     try {
-      setStudentText(await extractPdfText(file));
+      setStudentText(await extractPdfText(file, (p) => setStudentProgress(progressLabel(p))));
     } catch {
       toast.error("Could not read that PDF. Try another file.");
       setStudentFile(null);
     } finally {
       setParsing(null);
+      setStudentProgress(null);
     }
   };
 
