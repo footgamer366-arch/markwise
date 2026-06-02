@@ -178,6 +178,7 @@ function Index() {
                 hint="Drop the correct-answers PDF here"
                 fileName={modelFile?.name ?? null}
                 loading={parsing === "model"}
+                progressLabel={modelProgress}
                 onFile={handleModel}
                 accent
               />
@@ -186,6 +187,7 @@ function Index() {
                 hint="Drop the student's PDF here"
                 fileName={studentFile?.name ?? null}
                 loading={parsing === "student"}
+                progressLabel={studentProgress}
                 onFile={handleStudent}
               />
             </div>
