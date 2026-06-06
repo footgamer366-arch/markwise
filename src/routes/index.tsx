@@ -116,8 +116,10 @@ function Index() {
     if (!scheme) return;
     setBusy(true);
     try {
-      const { results } = await gradeFn({
-        data: { modelText, studentText, questions: scheme.questions },
+      const { results } = await gradeAnswers({
+        modelText,
+        studentText,
+        questions: scheme.questions,
       });
       setReport(buildScoreReport(scheme, results ?? []));
       setStep("report");
