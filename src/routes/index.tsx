@@ -30,8 +30,8 @@ export const Route = createFileRoute("/")({
 type Step = "upload" | "review" | "report";
 
 function Index() {
-  const extractFn = useServerFn(extractMarkScheme);
-  const gradeFn = useServerFn(gradeAnswers);
+  const [hasKey, setHasKey] = useState(false);
+
 
   const [step, setStep] = useState<Step>("upload");
   const [modelFile, setModelFile] = useState<File | null>(null);
