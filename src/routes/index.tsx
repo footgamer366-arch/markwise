@@ -208,13 +208,19 @@ function Index() {
               />
             </div>
 
+            <div className="mt-8">
+              <ApiKeyCard onSaved={() => setHasKey(!!getApiKey())} />
+            </div>
+
             <div className="mt-8 flex justify-center">
               <Button
                 size="lg"
                 variant="pen"
-                disabled={!modelText || !studentText || busy || parsing !== null}
+                disabled={!modelText || !studentText || busy || parsing !== null || !getApiKey()}
                 onClick={handleAnalyze}
               >
+                {/* hasKey state drives re-render when the key is saved */}
+                {void hasKey}
                 {busy ? <Loader2 className="animate-spin" /> : <ScrollText className="h-4 w-4" />}
                 Analyse mark scheme
                 {!busy && <ArrowRight className="h-4 w-4" />}
