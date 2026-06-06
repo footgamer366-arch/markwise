@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
 import { GraduationCap, ArrowRight, Loader2, RotateCcw, ScrollText } from "lucide-react";
 import { toast } from "sonner";
 
@@ -9,10 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Toaster } from "@/components/ui/sonner";
 import { FileUpload } from "@/components/FileUpload";
+import { ApiKeyCard } from "@/components/ApiKeyCard";
 import { MarkSchemeEditor } from "@/components/MarkSchemeEditor";
 import { GradeReport } from "@/components/GradeReport";
 import { extractPdfText, type ExtractProgress } from "@/lib/pdf-text";
-import { extractMarkScheme, gradeAnswers } from "@/lib/grading.functions";
+import { extractMarkScheme, gradeAnswers, getApiKey } from "@/lib/grading";
 import { buildScoreReport, type MarkScheme, type ScoreReport } from "@/lib/scoring";
 
 export const Route = createFileRoute("/")({
