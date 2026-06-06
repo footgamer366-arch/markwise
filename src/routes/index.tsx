@@ -88,9 +88,13 @@ function Index() {
 
   const handleAnalyze = async () => {
     if (!modelText || !studentText) return;
+    if (!getApiKey()) {
+      toast.error("Add your Gemini API key first.");
+      return;
+    }
     setBusy(true);
     try {
-      const result = await extractFn({ data: { modelText } });
+      const result = await extractMarkScheme(modelText);
       if (!result?.questions?.length) {
         toast.error("Couldn't detect questions in the model paper. Check the file.");
         return;
