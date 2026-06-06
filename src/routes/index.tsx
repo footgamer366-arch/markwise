@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
 import { GraduationCap, ArrowRight, Loader2, RotateCcw, ScrollText } from "lucide-react";
 import { toast } from "sonner";
 
@@ -9,10 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Toaster } from "@/components/ui/sonner";
 import { FileUpload } from "@/components/FileUpload";
+import { ApiKeyCard } from "@/components/ApiKeyCard";
 import { MarkSchemeEditor } from "@/components/MarkSchemeEditor";
 import { GradeReport } from "@/components/GradeReport";
 import { extractPdfText, type ExtractProgress } from "@/lib/pdf-text";
-import { extractMarkScheme, gradeAnswers } from "@/lib/grading.functions";
+import { extractMarkScheme, gradeAnswers, getApiKey } from "@/lib/grading";
 import { buildScoreReport, type MarkScheme, type ScoreReport } from "@/lib/scoring";
 
 export const Route = createFileRoute("/")({
@@ -30,8 +30,8 @@ export const Route = createFileRoute("/")({
 type Step = "upload" | "review" | "report";
 
 function Index() {
-  const extractFn = useServerFn(extractMarkScheme);
-  const gradeFn = useServerFn(gradeAnswers);
+  const [hasKey, setHasKey] = useState(false);
+
 
   const [step, setStep] = useState<Step>("upload");
   const [modelFile, setModelFile] = useState<File | null>(null);
@@ -88,9 +88,13 @@ function Index() {
 
   const handleAnalyze = async () => {
     if (!modelText || !studentText) return;
+    if (!getApiKey()) {
+      toast.error("Add your Gemini API key first.");
+      return;
+    }
     setBusy(true);
     try {
-      const result = await extractFn({ data: { modelText } });
+      const result = await extractMarkScheme(modelText);
       if (!result?.questions?.length) {
         toast.error("Couldn't detect questions in the model paper. Check the file.");
         return;
@@ -112,8 +116,10 @@ function Index() {
     if (!scheme) return;
     setBusy(true);
     try {
-      const { results } = await gradeFn({
-        data: { modelText, studentText, questions: scheme.questions },
+      const { results } = await gradeAnswers({
+        modelText,
+        studentText,
+        questions: scheme.questions,
       });
       setReport(buildScoreReport(scheme, results ?? []));
       setStep("report");
@@ -202,13 +208,19 @@ function Index() {
               />
             </div>
 
+            <div className="mt-8">
+              <ApiKeyCard onSaved={() => setHasKey(!!getApiKey())} />
+            </div>
+
             <div className="mt-8 flex justify-center">
               <Button
                 size="lg"
                 variant="pen"
-                disabled={!modelText || !studentText || busy || parsing !== null}
+                disabled={!modelText || !studentText || busy || parsing !== null || !getApiKey()}
                 onClick={handleAnalyze}
               >
+                {/* hasKey state drives re-render when the key is saved */}
+                {void hasKey}
                 {busy ? <Loader2 className="animate-spin" /> : <ScrollText className="h-4 w-4" />}
                 Analyse mark scheme
                 {!busy && <ArrowRight className="h-4 w-4" />}
